@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Image Gallery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Our Creative Gallery</h1>
+        <nav class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="nature">Nature</button>
+            <button class="filter-btn" data-filter="city">City</button>
+            <button class="filter-btn" data-filter="abstract">Abstract</button>
+        </nav>
+    </header>
+
+    <main class="gallery-container">
+        <div class="gallery-item nature">
+            <img src="images/nature1.jpg" alt="Green Forest">
+            <div class="overlay">
+                <h3>Forest Path</h3>
+                <p>A serene walk through nature.</p>
+            </div>
+        </div>
+        <div class="gallery-item city">
+            <img src="images/city1.jpg" alt="City Skyline">
+            <div class="overlay">
+                <h3>Urban Lights</h3>
+                <p>Night view of the bustling city.</p>
+            </div>
+        </div>
+        <div class="gallery-item nature">
+            <img src="images/nature2.jpg" alt="Mountain Lake">
+            <div class="overlay">
+                <h3>Mountain Serenity</h3>
+                <p>Clear waters reflecting the peaks.</p>
+            </div>
+        </div>
+        <div class="gallery-item abstract">
+            <img src="images/abstract1.jpg" alt="Abstract Art">
+            <div class="overlay">
+                <h3>Geometric Flow</h3>
+                <p>Lines and shapes in harmony.</p>
+            </div>
+        </div>
+        <div class="gallery-item city">
+            <img src="images/city2.jpg" alt="Street View">
+            <div class="overlay">
+                <h3>Busy Street</h3>
+                <p>Life in the heart of the city.</p>
+            </div>
+        </div>
+        <div class="gallery-item nature">
+            <img src="images/nature3.jpg" alt="Desert Sunset">
+            <div class="overlay">
+                <h3>Desert Glow</h3>
+                <p>Sun setting over the dunes.</p>
+            </div>
+        </div>
+        <div class="gallery-item abstract">
+            <img src="images/abstract2.jpg" alt="Colorful Swirls">
+            <div class="overlay">
+                <h3>Vibrant Vortex</h3>
+                <p>A burst of colors and energy.</p>
+            </div>
+        </div>
+        </main>
+
+    <div id="lightbox" class="lightbox">
+        <span class="close-btn">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" src="" alt="Lightbox Image">
+        <div class="caption-container">
+            <p id="caption"></p>
+        </div>
+        <a class="prev" id="prev-btn">&#10094;</a>
+        <a class="next" id="next-btn">&#10095;</a>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
