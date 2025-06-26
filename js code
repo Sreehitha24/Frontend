@@ -1,0 +1,109 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const captionText = document.getElementById('caption');
+    const closeBtn = document.querySelector('.close-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const allGalleryItems = document.querySelectorAll('.gallery-item');
+
+    let currentImageIndex;
+    let filteredImages = Array.from(allGalleryItems); // Initialize with all images
+
+    // Function to open the lightbox
+    function openLightbox(index) {
+        currentImageIndex = index;
+        const imgElement = filteredImages[currentImageIndex].querySelector('img');
+        const overlayElement = filteredImages[currentImageIndex].querySelector('.overlay');
+
+        lightboxImg.src = imgElement.src;
+        captionText.textContent = overlayElement ? overlayElement.querySelector('h3').textContent + ': ' + overlayElement.querySelector('p').textContent : imgElement.alt;
+        lightbox.style.display = 'flex'; // Use flex to center
+    }
+
+    // Function to close the lightbox
+    function closeLightbox() {
+        lightbox.style.display = 'none';
+    }
+
+    // Event listener for opening lightbox
+    allGalleryItems.forEach((item, index) => {
+        item.addEventListener('click', () => {
+            // Find the index of the clicked item within the currently filtered images
+            const clickedSrc = item.querySelector('img').src;
+            const newIndex = filteredImages.findIndex(filteredItem => filteredItem.querySelector('img').src === clickedSrc);
+            if (newIndex !== -1) {
+                openLightbox(newIndex);
+            }
+        });
+    });
+
+    // Event listeners for lightbox navigation
+    prevBtn.addEventListener('click', () => {
+        currentImageIndex = (currentImageIndex - 1 + filteredImages.length) % filteredImages.length;
+        openLightbox(currentImageIndex);
+    });
+
+    nextBtn.addEventListener('click', () => {
+        currentImageIndex = (currentImageIndex + 1) % filteredImages.length;
+        openLightbox(currentImageIndex);
+    });
+
+    // Event listener for closing lightbox
+    closeBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+        // Close if clicking outside the image and navigation buttons
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    // Keyboard navigation for lightbox (Escape to close, arrows for next/prev)
+    document.addEventListener('keydown', (e) => {
+        if (lightbox.style.display === 'flex') {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            } else if (e.key === 'ArrowLeft') {
+                prevBtn.click();
+            } else if (e.key === 'ArrowRight') {
+                nextBtn.click();
+            }
+        }
+    });
+
+    // Image Filtering
+    filterButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const filter = e.target.dataset.filter;
+
+            // Remove active class from all buttons and add to the clicked one
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+
+            // Update filteredImages based on the filter
+            filteredImages = [];
+            allGalleryItems.forEach(item => {
+                if (filter === 'all' || item.classList.contains(filter)) {
+                    item.style.display = 'block'; // Show the item
+                    filteredImages.push(item);
+                } else {
+                    item.style.display = 'none'; // Hide the item
+                }
+            });
+
+            // If the lightbox is open and the current image is filtered out, close it
+            if (lightbox.style.display === 'flex') {
+                const currentSrc = lightboxImg.src;
+                const isCurrentFilteredOut = !filteredImages.some(item => item.querySelector('img').src === currentSrc);
+                if (isCurrentFilteredOut) {
+                    closeLightbox();
+                }
+            }
+        });
+    });
+
+    // Initial filtering (show all images on load)
+    document.querySelector('.filter-btn[data-filter="all"]').click();
+});
